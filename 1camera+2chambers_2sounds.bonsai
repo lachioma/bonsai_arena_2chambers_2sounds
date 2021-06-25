@@ -1,0 +1,415 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.6.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:al="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio"
+                 xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
+                 xmlns:vid="clr-namespace:Bonsai.Video;assembly=Bonsai.Video"
+                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="al:CreateAudioContext">
+          <al:DeviceName>Generic Software on Speakers/Headphones (Realtek(R) Audio)</al:DeviceName>
+          <al:SampleRate>0</al:SampleRate>
+          <al:Refresh>0</al:Refresh>
+          <al:Position>
+            <al:X>0</al:X>
+            <al:Y>0</al:Y>
+            <al:Z>0</al:Z>
+          </al:Position>
+          <al:Velocity>
+            <al:X>0</al:X>
+            <al:Y>0</al:Y>
+            <al:Z>0</al:Z>
+          </al:Velocity>
+          <al:Direction>
+            <al:X>-0</al:X>
+            <al:Y>-0</al:Y>
+            <al:Z>-1</al:Z>
+          </al:Direction>
+          <al:Up>
+            <al:X>0</al:X>
+            <al:Y>1</al:Y>
+            <al:Z>0</al:Z>
+          </al:Up>
+          <al:Gain>1</al:Gain>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="al:AudioResources">
+          <al:Buffers>
+            <al:BufferConfiguration xsi:type="al:SoundBuffer">
+              <al:Name>area1</al:Name>
+              <al:FileName>sweep_30-4k.wav</al:FileName>
+            </al:BufferConfiguration>
+            <al:BufferConfiguration xsi:type="al:SoundBuffer">
+              <al:Name>area2</al:Name>
+              <al:FileName>white_noise_2s.wav</al:FileName>
+            </al:BufferConfiguration>
+          </al:Buffers>
+          <al:Sources>
+            <al:SourceConfiguration>
+              <al:Name>area1</al:Name>
+              <al:BufferName>area1</al:BufferName>
+              <al:Direction>
+                <al:X>0</al:X>
+                <al:Y>0</al:Y>
+                <al:Z>0</al:Z>
+              </al:Direction>
+              <al:Position>
+                <al:X>0</al:X>
+                <al:Y>0</al:Y>
+                <al:Z>0</al:Z>
+              </al:Position>
+              <al:Velocity>
+                <al:X>0</al:X>
+                <al:Y>0</al:Y>
+                <al:Z>0</al:Z>
+              </al:Velocity>
+              <al:Looping>true</al:Looping>
+              <al:Relative>false</al:Relative>
+              <al:State>Initial</al:State>
+            </al:SourceConfiguration>
+            <al:SourceConfiguration>
+              <al:Name>area2</al:Name>
+              <al:BufferName>area2</al:BufferName>
+              <al:Direction>
+                <al:X>0</al:X>
+                <al:Y>0</al:Y>
+                <al:Z>0</al:Z>
+              </al:Direction>
+              <al:Position>
+                <al:X>0</al:X>
+                <al:Y>0</al:Y>
+                <al:Z>0</al:Z>
+              </al:Position>
+              <al:Velocity>
+                <al:X>0</al:X>
+                <al:Y>0</al:Y>
+                <al:Z>0</al:Z>
+              </al:Velocity>
+              <al:Looping>true</al:Looping>
+              <al:Relative>false</al:Relative>
+              <al:State>Initial</al:State>
+            </al:SourceConfiguration>
+          </al:Sources>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="res:LoadResources" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="vid:MjpegStream">
+          <vid:SourceUrl>http://172.22.112.174/mjpg/1/video.mjpg</vid:SourceUrl>
+          <vid:Login>dailyuser</vid:Login>
+          <vid:Password>zebraFINCH^@</vid:Password>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:CropPolygon">
+          <cv:Regions>
+            <cv:ArrayOfPoint>
+              <cv:Point>
+                <cv:X>184</cv:X>
+                <cv:Y>117</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>258</cv:X>
+                <cv:Y>117</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>258</cv:X>
+                <cv:Y>432</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>184</cv:X>
+                <cv:Y>432</cv:Y>
+              </cv:Point>
+            </cv:ArrayOfPoint>
+          </cv:Regions>
+          <cv:MaskType>ToZero</cv:MaskType>
+          <cv:FillValue>
+            <cv:Val0>0</cv:Val0>
+            <cv:Val1>0</cv:Val1>
+            <cv:Val2>0</cv:Val2>
+            <cv:Val3>0</cv:Val3>
+          </cv:FillValue>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:ConvertColor">
+          <cv:Conversion>Rgb2Gray</cv:Conversion>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:Average" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Val0</Selector>
+      </Expression>
+      <Expression xsi:type="LessThan">
+        <Operand xsi:type="DoubleProperty">
+          <Value>154</Value>
+        </Operand>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:DistinctUntilChanged" />
+      </Expression>
+      <Expression xsi:type="PublishSubject">
+        <Name>ToggleArea1</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:CropPolygon">
+          <cv:Regions>
+            <cv:ArrayOfPoint>
+              <cv:Point>
+                <cv:X>335</cv:X>
+                <cv:Y>127</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>441</cv:X>
+                <cv:Y>127</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>441</cv:X>
+                <cv:Y>429</cv:Y>
+              </cv:Point>
+              <cv:Point>
+                <cv:X>335</cv:X>
+                <cv:Y>429</cv:Y>
+              </cv:Point>
+            </cv:ArrayOfPoint>
+          </cv:Regions>
+          <cv:MaskType>ToZero</cv:MaskType>
+          <cv:FillValue>
+            <cv:Val0>0</cv:Val0>
+            <cv:Val1>0</cv:Val1>
+            <cv:Val2>0</cv:Val2>
+            <cv:Val3>0</cv:Val3>
+          </cv:FillValue>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:ConvertColor">
+          <cv:Conversion>Rgb2Gray</cv:Conversion>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:Average" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Val0</Selector>
+      </Expression>
+      <Expression xsi:type="LessThan">
+        <Operand xsi:type="DoubleProperty">
+          <Value>181</Value>
+        </Operand>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:DistinctUntilChanged" />
+      </Expression>
+      <Expression xsi:type="PublishSubject">
+        <Name>ToggleArea2</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:VideoWriter">
+          <cv:FileName>data\cam1_.avi</cv:FileName>
+          <cv:Suffix>Timestamp</cv:Suffix>
+          <cv:Buffered>true</cv:Buffered>
+          <cv:Overwrite>true</cv:Overwrite>
+          <cv:FourCC>FMP4</cv:FourCC>
+          <cv:FrameRate>30</cv:FrameRate>
+          <cv:FrameSize>
+            <cv:Width>0</cv:Width>
+            <cv:Height>0</cv:Height>
+          </cv:FrameSize>
+          <cv:ResizeInterpolation>NearestNeighbor</cv:ResizeInterpolation>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Timestamp" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Timestamp.TimeOfDay.TotalSeconds</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Zip" />
+      </Expression>
+      <Expression xsi:type="io:CsvWriter">
+        <io:FileName>data\cam1_.csv</io:FileName>
+        <io:Append>false</io:Append>
+        <io:Overwrite>false</io:Overwrite>
+        <io:Suffix>Timestamp</io:Suffix>
+        <io:IncludeHeader>true</io:IncludeHeader>
+        <io:Selector>Item1,Item2,Item3</io:Selector>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>ToggleArea1</Name>
+      </Expression>
+      <Expression xsi:type="Condition">
+        <Name>isTrue</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="Equal">
+              <Operand xsi:type="BooleanProperty">
+                <Value>true</Value>
+              </Operand>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="al:PlaySource">
+          <al:SourceName>
+            <al:string>area1</al:string>
+          </al:SourceName>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Condition">
+        <Name>isFalse</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="Equal">
+              <Operand xsi:type="BooleanProperty">
+                <Value>false</Value>
+              </Operand>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="al:PauseSource">
+          <al:SourceName>
+            <al:string>area1</al:string>
+          </al:SourceName>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="al:RewindSource">
+          <al:SourceName>
+            <al:string>area1</al:string>
+          </al:SourceName>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>ToggleArea2</Name>
+      </Expression>
+      <Expression xsi:type="Condition">
+        <Name>isTrue</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="Equal">
+              <Operand xsi:type="BooleanProperty">
+                <Value>true</Value>
+              </Operand>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="al:PlaySource">
+          <al:SourceName>
+            <al:string>area2</al:string>
+          </al:SourceName>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Condition">
+        <Name>isFalse</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="Equal">
+              <Operand xsi:type="BooleanProperty">
+                <Value>false</Value>
+              </Operand>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="al:PauseSource">
+          <al:SourceName>
+            <al:string>area2</al:string>
+          </al:SourceName>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="al:RewindSource">
+          <al:SourceName>
+            <al:string>area2</al:string>
+          </al:SourceName>
+        </Combinator>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="3" To="4" Label="Source1" />
+      <Edge From="3" To="11" Label="Source1" />
+      <Edge From="3" To="18" Label="Source1" />
+      <Edge From="3" To="19" Label="Source1" />
+      <Edge From="4" To="5" Label="Source1" />
+      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="8" To="21" Label="Source2" />
+      <Edge From="9" To="10" Label="Source1" />
+      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="12" To="13" Label="Source1" />
+      <Edge From="13" To="14" Label="Source1" />
+      <Edge From="14" To="15" Label="Source1" />
+      <Edge From="15" To="16" Label="Source1" />
+      <Edge From="15" To="21" Label="Source3" />
+      <Edge From="16" To="17" Label="Source1" />
+      <Edge From="19" To="20" Label="Source1" />
+      <Edge From="20" To="21" Label="Source1" />
+      <Edge From="21" To="22" Label="Source1" />
+      <Edge From="23" To="24" Label="Source1" />
+      <Edge From="23" To="26" Label="Source1" />
+      <Edge From="24" To="25" Label="Source1" />
+      <Edge From="26" To="27" Label="Source1" />
+      <Edge From="27" To="28" Label="Source1" />
+      <Edge From="29" To="30" Label="Source1" />
+      <Edge From="29" To="32" Label="Source1" />
+      <Edge From="30" To="31" Label="Source1" />
+      <Edge From="32" To="33" Label="Source1" />
+      <Edge From="33" To="34" Label="Source1" />
+    </Edges>
+  </Workflow>
+</WorkflowBuilder>
